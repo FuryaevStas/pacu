@@ -9,7 +9,15 @@ struct COORD
 	unsigned int y: 16;
 };
 
-void drawBorders(WINDOW *_window);
+//void drawBorders(WINDOW *_window);
+
+void drawTitle(WINDOW *_window, string _title);
+
+void drawListContent();
+void drawSummaryContent();
+
+void drawListWindow();
+void drawSummaryWindow();
 
 void initGUI();
 void resizeSignalHandler(int signum);

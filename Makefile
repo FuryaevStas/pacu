@@ -1,16 +1,22 @@
 OUTNAME		= accounter.o
-CFLAGS		= -lncursesw -lpthread -Wall
+CFLAGS		= -lncursesw -lpthread -Wall -std=c++11
 
 all: accounter
 
-accounter: core.o render.o
-	g++ core.o render.o -o $(OUTNAME) $(CFLAGS)
+accounter: core.o render.o list.o config.o
+	g++ core.o render.o list.o config.o -o $(OUTNAME) $(CFLAGS)
 
 core.o: core.cpp header.h render.h
-	g++ -c core.cpp -o core.o
+	g++ -c core.cpp -o core.o $(CFLAGS)
 	
-render.o: render.cpp render.h header.h
-	g++ -c render.cpp -o render.o
+render.o: render.cpp render.h header.h config.o list.o
+	g++ -c render.cpp -o render.o $(CFLAGS)
+
+list.o: list.cpp list.h header.h config.o
+	g++ -c list.cpp -o list.o $(CFLAGS)
+
+config.o: config.cpp config.h header.h
+	g++ -c config.cpp -o config.o $(CFLAGS)
 
 clean:
 	rm -rf *.o

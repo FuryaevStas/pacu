@@ -1,8 +1,9 @@
 #include	"header.h"
 
+CConfigFile config;
+
 COORD *parentCoords		= new COORD();
 COORD *resizedCoords	= new COORD();
-
 
 WINDOW*	mainwin(NULL);
 WINDOW*	list(NULL);
@@ -39,21 +40,44 @@ void drawBorders(WINDOW *_window)
 }
 */
 
-void drawList()
+void drawTitle(WINDOW *_window, const char *_title)
+{
+	wattron(_window, A_REVERSE);
+	mvwaddstr(_window, 0, 3, _title);
+	wattroff(_window, A_REVERSE);
+}
+
+void drawListContent()
+{
+	if (config.getPar(LISTPATH) == "none")
+	{
+		mvwaddstr(list, 5, 5, "NO FILE");
+	}
+}
+
+void drawSummaryContent()
+{
+	
+}
+
+void drawListWindow()
 {
 	if (list != NULL)
 		delwin(list);
 	list	= subwin(mainwin, parentCoords->y - menuHeight, parentCoords->x - sidebarSize, 0, 0);
 	box(list, 0, 0);
+	drawTitle(list, "List");
+	drawListContent();
 	wrefresh(list);
 }
 
-void drawSummary()
+void drawSummaryWindow()
 {
 	if (summary != NULL)
 		delwin(summary);
 	summary	= subwin(mainwin, parentCoords->y - menuHeight, sidebarSize, 0, parentCoords->x - sidebarSize);
 	box(summary, 0, 0);
+	drawTitle(summary, "Summary");
 	wrefresh(summary);
 }
 
@@ -91,8 +115,8 @@ void initGUI()
 	getmaxyx(stdscr, parentCoords->y, parentCoords->x);
 	
 	//Draw main elements
-	drawList();
-	drawSummary();
+	drawListWindow();
+	drawSummaryWindow();
 	drawMenu();
 	
 	refresh();				//Update the screen (Main window and subwindows)
@@ -121,8 +145,8 @@ void resizeSignalHandler(int signum)
 		clear();
 		
 //TODO: Optimize to reduce the CPU loading
-		drawList();
-		drawSummary();		
+		drawListWindow();
+		drawSummaryWindow();		
 		drawMenu();
 		
 		refresh();

@@ -12,7 +12,8 @@
 
 using namespace std;
 
-#include	"render.h"
 #include	"config.h"
+#include	"render.h"
+#include	"list.h"
 
 #endif
