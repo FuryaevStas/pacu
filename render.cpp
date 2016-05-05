@@ -1,44 +1,20 @@
 #include	"header.h"
 
-CConfigFile config;
+CConfigFile<SSetting> config(
+				defaultSettings,
+				SETTINGS_NUM,
+				"pacu.cfg");
 
-COORD *parentCoords		= new COORD();
-COORD *resizedCoords	= new COORD();
+COORD	*parentCoords	= new COORD();
+COORD	*resizedCoords	= new COORD();
 
-WINDOW*	mainwin(NULL);
-WINDOW*	list(NULL);
-WINDOW*	summary(NULL);
-WINDOW* menu(NULL);
+WINDOW*	mainwin			(NULL);
+WINDOW*	list			(NULL);
+WINDOW*	summary			(NULL);
+WINDOW*	menu			(NULL);
 
-int sidebarSize(DEFAULT_SIDEBAR_SIZE);
-int	menuHeight(1);
-
-
-/* Draw borders to any window
-void drawBorders(WINDOW *_window)
-{
-	COORD _current;
-	
-	getmaxyx(_window, _current.y, _current.x);
-	
-	mvwaddch(_window, 0, 0, '+');
-	mvwaddch(_window, _current.y - 1, 0, '+');
-	mvwaddch(_window, _current.y - 1, _current.x - 1, '+');
-	mvwaddch(_window, 0, _current.x - 1, '+');
-	
-	for (int i(1); i < _current.y - 1; i++)
-	{
-		mvwaddch(_window, i, 0, '|');
-		mvwaddch(_window, i, _current.x - 1, '|');
-	}
-	
-	for (int i(1); i < _current.x - 1; i++)
-	{
-		mvwaddch(_window, 0, i, '-');
-		mvwaddch(_window, _current.y - 1, i, '-');	
-	}
-}
-*/
+int		sidebarSize		(DEFAULT_SIDEBAR_SIZE);
+int		menuHeight		(1);
 
 void drawTitle(WINDOW *_window, const char *_title)
 {
@@ -49,9 +25,10 @@ void drawTitle(WINDOW *_window, const char *_title)
 
 void drawListContent()
 {
-	if (config.getPar(LISTPATH) == "none")
+	if (config.getPar(LIST_PATH) == "none")
 	{
 		mvwaddstr(list, 5, 5, "NO FILE");
+		wrefresh(list);
 	}
 }
 
@@ -64,7 +41,10 @@ void drawListWindow()
 {
 	if (list != NULL)
 		delwin(list);
-	list	= subwin(mainwin, parentCoords->y - menuHeight, parentCoords->x - sidebarSize, 0, 0);
+	list	= subwin(mainwin,
+					parentCoords->y - menuHeight,
+					parentCoords->x - sidebarSize,
+					0, 0);
 	box(list, 0, 0);
 	drawTitle(list, "List");
 	drawListContent();
@@ -75,7 +55,10 @@ void drawSummaryWindow()
 {
 	if (summary != NULL)
 		delwin(summary);
-	summary	= subwin(mainwin, parentCoords->y - menuHeight, sidebarSize, 0, parentCoords->x - sidebarSize);
+	summary	= subwin(mainwin,
+					parentCoords->y - menuHeight,
+					sidebarSize,
+					0, parentCoords->x - sidebarSize);
 	box(summary, 0, 0);
 	drawTitle(summary, "Summary");
 	wrefresh(summary);
@@ -87,7 +70,10 @@ void drawMenu()
 {
 	if (menu != NULL)
 		delwin(menu);
-	menu = subwin(mainwin, menuHeight, parentCoords->x, parentCoords->y - 1, 0);
+	menu = subwin(mainwin,
+				menuHeight,
+				parentCoords->x,
+				parentCoords->y - 1, 0);
 	init_pair(1, COLOR_BLACK, COLOR_CYAN);
 	wattron(menu, COLOR_PAIR(1));
 	mvwhline(menu, 0, 0, ' ', parentCoords->x);
@@ -135,7 +121,8 @@ void resizeSignalHandler(int signum)
 	//Get new window's size to the 'resizedCoords' struct
 	getmaxyx(mainwin, resizedCoords->y, resizedCoords->x);
 	
-	if (resizedCoords->y != parentCoords->y || resizedCoords->x != parentCoords->x)
+	if (resizedCoords->y != parentCoords->y ||
+		resizedCoords->x != parentCoords->x)
 	{
 		//Refresh old values
 		parentCoords->y = resizedCoords->y;
