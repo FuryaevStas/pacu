@@ -13,6 +13,7 @@
 using namespace std;
 
 #include	"config.h"
+#include	"menu.h"
 #include	"render.h"
 #include	"list.h"
 
