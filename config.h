@@ -1,5 +1,6 @@
 #ifndef	_CONFIG_H_
 #define	_CONFIG_H_
+#pragma once
 
 #define SETTINGS_NUM 1
 
@@ -10,10 +11,6 @@ enum settings {
 struct SSetting {
 	string name;
 	string value;	
-};
-
-SSetting	defaultSettings[] = {
-	{"listPath", "none"}
 };
 
 template<typename SettingType>
