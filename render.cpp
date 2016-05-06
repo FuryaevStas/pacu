@@ -1,6 +1,6 @@
 #include	"header.h"
 
-extern SSetting *defaultSettings;
+extern SSetting defaultSettings[];
 
 CConfigFile<SSetting> config(
 				defaultSettings,
