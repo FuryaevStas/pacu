@@ -22,6 +22,6 @@ void drawSummaryWindow();
 void initGUI();
 void resizeSignalHandler(int signum);
 
-void finish(int signum);
+void finishGUI(int signum);
 
 #endif

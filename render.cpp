@@ -1,8 +1,12 @@
 #include	"header.h"
 
-extern SSetting defaultSettings[];
+SSetting	defaultSettings[] = {
+	{ "listPath", "none" }
+};
 
-CConfigFile<SSetting> config(
+extern	CConfigFile	shortcuts;
+
+CConfigFile config(
 				defaultSettings,
 				SETTINGS_NUM,
 				"pacu.cfg");
@@ -27,7 +31,7 @@ void drawTitle(WINDOW *_window, const char *_title)
 
 void drawListContent()
 {
-	if (config.getPar(LIST_PATH) == "none")
+	if (!strcmp(config.getPar(LIST_PATH).c_str(), "none"))
 	{
 		mvwaddstr(list, 5, 5, "NO FILE");
 		wrefresh(list);
@@ -143,7 +147,7 @@ void resizeSignalHandler(int signum)
 }
 
 //Closing of all windows and shutting down the program
-void finish(int signum)
+void finishGUI(int signum)
 {
 	delwin(list);
 	delwin(summary);
