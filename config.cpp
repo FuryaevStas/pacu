@@ -25,26 +25,33 @@ void CConfigFile::writeSettings(SSetting _settings[])
 {
 	this->configFile = fopen(this->fileName.c_str(), "w");
 	for (int i(0); i < this->settingsNum; i++)
-		fprintf(this->configFile, "%s=%s\n",
+	{
+		fprintf(this->configFile, "%s=%s",
 				_settings[i].name.c_str(),
 				_settings[i].value.c_str());
+		if (i < this->settingsNum - 1)
+			fprintf(this->configFile, "\n");
+	}
 	fclose(this->configFile);
 }
 
 void CConfigFile::readSettings(SSetting _settings[])
 {
 	this->configFile = fopen(this->fileName.c_str(), "r");
-	char ch(0);
-	string arg(""), val("");
+	char	ch(0);
+	int 	i(0);
 	while (!feof(this->configFile))
 	{
-		while ((ch = fgetc(this->configFile)) != '=' && !feof(this->configFile))
+		string arg(""), val("");
+		while ((ch = fgetc(this->configFile)) != '=' 
+				&& !feof(this->configFile))
 		 	arg += ch;
-		while ((ch = fgetc(this->configFile)) != '\n' && !feof(this->configFile))
+		while ((ch = fgetc(this->configFile)) != '\n' 
+				&& !feof(this->configFile))
 			val += ch;
-		for (int i(0); i < this->settingsNum; i++)
-			_settings[i] = { arg.c_str(), val.c_str() };
+		_settings[i++] = { arg.c_str(), val.c_str() };
 	}
+	fprintf(stderr, "%s=%s\n", _settings[0].name.c_str(), _settings[0].value.c_str());
 	fclose(this->configFile);
 }
 
