@@ -31,7 +31,7 @@ void drawTitle(WINDOW *_window, const char *_title)
 
 void drawListContent()
 {
-	if (!strcmp(config.getPar(LIST_PATH).c_str(), "none"))
+	if (!strcmp(config.getPar(LIST_PATH).value.c_str(), "none"))
 	{
 		mvwaddstr(list, 5, 5, "NO FILE");
 		wrefresh(list);
@@ -81,10 +81,20 @@ void drawMenu()
 				parentCoords->x,
 				parentCoords->y - 1, 0);
 	init_pair(1, COLOR_BLACK, COLOR_CYAN);
+	init_pair(2, COLOR_WHITE, COLOR_BLACK);
 	wattron(menu, COLOR_PAIR(1));
 	mvwhline(menu, 0, 0, ' ', parentCoords->x);
-	wprintw(menu, " Q - Выйти");
 	wattroff(menu, COLOR_PAIR(1));
+	for (int i(0); i < MENU_ITEMS_NUM; i++)
+	{
+		wattron(menu, COLOR_PAIR(2));
+		waddch(menu, shortcuts.getPar(i).value[0]);
+		wattroff(menu, COLOR_PAIR(2));
+		wattron(menu, COLOR_PAIR(1));
+		wprintw(menu, "%s", shortcuts.getPar(i).name.c_str());
+		wattroff(menu, COLOR_PAIR(1));
+	}
+	
 	refresh();
 }
 

@@ -55,7 +55,7 @@ void CConfigFile::readSettings(SSetting _settings[])
 	fclose(this->configFile);
 }
 
-string CConfigFile::getPar(int _setting)
+SSetting CConfigFile::getPar(int _setting)
 {
-	return this->currentSettings[_setting].value;
+	return this->currentSettings[_setting];
 }

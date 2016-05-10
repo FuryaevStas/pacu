@@ -19,9 +19,8 @@ int main(int argc, char *argv[])
 	
 	int key(0);								//Pressed key	
 	
-	while ((key = getch()) != shortcuts.getPar(K_QUIT)[0])
+	while ((key = getch()) != shortcuts.getPar(K_QUIT).value[0])
 	{
-		mvaddch(5,5, shortcuts.getPar(K_QUIT)[0]);
 		switch (key)						//Handling keyboard pressing
 		{
 			

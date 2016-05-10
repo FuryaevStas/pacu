@@ -25,7 +25,7 @@ public:
 				string _fileName);
 	~CConfigFile();
 	
-	string	getPar(int _setting);
+	SSetting	getPar(int _setting);
 	
 private:
 	int	settingsNum;
