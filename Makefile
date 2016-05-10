@@ -1,4 +1,4 @@
-OUTNAME		= accounter.o
+OUTNAME		= pacu.out
 CFLAGS		= -lncursesw -lpthread -Wall -std=c++11
 
 all: accounter
